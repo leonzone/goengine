@@ -5,12 +5,12 @@ import android.text.TextUtils;
 import com.gouuse.goengine.common.GoConfig;
 import com.gouuse.goengine.http.GoHttp;
 import com.gouuse.goengine.http.api.ApiService;
-import com.gouuse.goengine.http.callback.ApiCallback;
 import com.gouuse.goengine.http.func.ApiFunc;
 import com.gouuse.goengine.http.func.ApiRetryFunc;
 import com.gouuse.goengine.http.mode.ApiHost;
 import com.gouuse.goengine.http.mode.CacheMode;
 import com.gouuse.goengine.http.mode.CacheResult;
+import com.gouuse.goengine.http.callback.NetCallback;
 
 import java.lang.reflect.Type;
 import java.util.LinkedHashMap;
@@ -20,6 +20,7 @@ import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
@@ -61,7 +62,7 @@ public abstract class BaseHttpRequest<R extends BaseHttpRequest> extends BaseReq
         return cacheExecute(type);
     }
 
-    public <T> void request(ApiCallback<T> callback) {
+    public void request(NetCallback callback) {
         generateGlobalConfig();
         generateLocalConfig();
         execute(callback);
@@ -101,7 +102,7 @@ public abstract class BaseHttpRequest<R extends BaseHttpRequest> extends BaseReq
 
     protected abstract <T> Observable<CacheResult<T>> cacheExecute(Type type);
 
-    protected abstract <T> void execute(ApiCallback<T> callback);
+    protected abstract void execute(NetCallback callback);
 
     protected <T> ObservableTransformer<ResponseBody, T> norTransformer(final Type type) {
         return new ObservableTransformer<ResponseBody, T>() {
@@ -266,6 +267,11 @@ public abstract class BaseHttpRequest<R extends BaseHttpRequest> extends BaseReq
 
     public Map<String, String> getParams() {
         return params;
+    }
+
+
+    protected void execute(DisposableObserver disposableObserver) {
+
     }
 
 }

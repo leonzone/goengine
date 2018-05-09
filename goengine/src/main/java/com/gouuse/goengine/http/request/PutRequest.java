@@ -2,15 +2,13 @@ package com.gouuse.goengine.http.request;
 
 
 import com.gouuse.goengine.http.GoHttp;
-import com.gouuse.goengine.http.callback.ApiCallback;
 import com.gouuse.goengine.http.core.ApiManager;
 import com.gouuse.goengine.http.mode.CacheResult;
-import com.gouuse.goengine.http.subscriber.ApiCallbackSubscriber;
+import com.gouuse.goengine.http.callback.NetCallback;
 
 import java.lang.reflect.Type;
 
 import io.reactivex.Observable;
-import io.reactivex.observers.DisposableObserver;
 
 
 /**
@@ -33,15 +31,14 @@ public class PutRequest extends BaseHttpRequest<PutRequest> {
     }
 
     @Override
-    protected <T> void execute(ApiCallback<T> callback) {
-        DisposableObserver disposableObserver = new ApiCallbackSubscriber(callback);
+    protected  void execute(NetCallback callback) {
         if (super.tag != null) {
-            ApiManager.get().add(super.tag, disposableObserver);
+            ApiManager.get().add(super.tag, callback);
         }
         if (isLocalCache) {
-            this.cacheExecute(getSubType(callback)).subscribe(disposableObserver);
+            this.cacheExecute(getSubType(callback)).subscribe(callback);
         } else {
-            this.execute(getType(callback)).subscribe(disposableObserver);
+            this.execute(getType(callback)).subscribe(callback);
         }
     }
 }

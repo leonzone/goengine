@@ -1,9 +1,11 @@
 package com.gouuse.goenginesample.view.login;
 
+import com.gouuse.goengine.common.GsonUtil;
 import com.gouuse.goengine.http.GoHttp;
+import com.gouuse.goengine.log.GoLog;
 import com.gouuse.goenginesample.base.BasePresenter;
-import com.gouuse.goenginesample.entity.User;
-import com.gouuse.goenginesample.net.RequestCallBack;
+import com.gouuse.goenginesample.engine.Friend;
+import com.gouuse.goenginesample.net.ApiCallBack;
 
 
 /**
@@ -17,23 +19,28 @@ public class LoginPresenter extends BasePresenter<LoginView> {
         super(view);
     }
 
-    public void login(String userName, String passWord) {
-        GoHttp.POST("auth_center/v3/login")
+    public void login(String userName, String passWord, String companyId) {
+        GoHttp.POST("friend/json")
                 .tag("login")
                 .addParam("account", userName)
                 .addParam("password", passWord)
-                .request(new RequestCallBack<User>() {
+//                .addParam("company_id", companyId)
+                .request(new ApiCallBack<Friend>() {
                     @Override
-                    public void onSuccess(User user) {
-                        mvpView.loginSuccess(user.toString());
-
+                    public void onSuccess(Friend model) {
+                        GoLog.json(GsonUtil.gson().toJson(model));
                     }
 
                     @Override
-                    protected void onFailed(int errCode, String errMsg) {
-                        mvpView.loginFail(errCode, errMsg);
+                    public void onFail(long code, String msg) {
+                        GoLog.d(msg);
+                    }
+                    @Override
+                    protected void finish() {
+
                     }
                 });
+
     }
 
     @Override

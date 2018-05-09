@@ -10,9 +10,9 @@ import io.reactivex.observers.DisposableObserver;
  * Created by reiserx on 2018/3/29.
  * desc :API统一订阅者
  */
-abstract class ApiSubscriber<T> extends DisposableObserver<T> {
+public abstract class ApiSubscriber<T> extends DisposableObserver<T> {
 
-    ApiSubscriber() {
+    public  ApiSubscriber() {
 
     }
 

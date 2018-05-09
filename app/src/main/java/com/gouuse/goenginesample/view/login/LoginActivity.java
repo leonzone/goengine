@@ -35,7 +35,21 @@ public class LoginActivity extends MvpActivity<LoginPresenter> implements LoginV
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mvpPresenter.login(mEtName.getText().toString(), mEtPass.getText().toString());
+                mvpPresenter.login(mEtName.getText().toString(), mEtPass.getText().toString(),"2603");
+
+//                GoHttp.GET("Android/10/1")
+//                        .tag("1")
+//                        .request(new ApiCallback<Gank>() {
+//                            @Override
+//                            public void onSuccess(Gank model) {
+//                                GoLog.json(new Gson().toJson(model));
+//                            }
+//
+//                            @Override
+//                            public void onFail(long code, String msg) {
+//                                GoLog.d(msg);
+//                            }
+//                        });
             }
         });
     }

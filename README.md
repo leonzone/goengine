@@ -4,9 +4,8 @@
 this library contain core function:
 
 - Net Request
-- Permission
+- [Permission](https://github.com/leonzone/goengine/wiki)
 - ImageLoader
 
 
-[Permission](https://github.com/leonzone/goengine/wiki)
 

@@ -22,11 +22,19 @@ public class ApiException extends Exception {
 
     private final int code;
     private String message;
+    private String data;
 
     public ApiException(Throwable throwable, int code) {
         super(throwable);
         this.code = code;
         this.message = throwable.getMessage();
+    }
+
+
+    public ApiException(int code, String data, String msg) {
+        this.code = code;
+        this.data = data;
+        this.message = msg;
     }
 
     public int getCode() {
@@ -83,7 +91,7 @@ public class ApiException extends Exception {
             return ex;
         } else {
             ex = new ApiException(e, ApiCode.Request.UNKNOWN);
-            ex.message = "UNKNOWN";
+            ex.message = e.getMessage();
             return ex;
         }
     }

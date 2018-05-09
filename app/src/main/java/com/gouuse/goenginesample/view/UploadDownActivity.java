@@ -10,11 +10,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.gouuse.goengine.http.GoHttp;
-import com.gouuse.goengine.http.callback.ApiCallback;
-import com.gouuse.goengine.http.callback.UploadCallback;
-import com.gouuse.goengine.http.mode.DownProgress;
-import com.gouuse.goengine.log.GoLog;
 import com.gouuse.goenginesample.R;
 
 import java.io.File;
@@ -31,6 +26,7 @@ public class UploadDownActivity extends AppCompatActivity {
     private Button mUpload_btn;
     private ProgressBar mUpload_progress;
     private TextView mUpload_progress_desc;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,39 +61,39 @@ public class UploadDownActivity extends AppCompatActivity {
 
     private void upload() {
         mUpload_btn.setClickable(false);
-        GoHttp.UPLOAD("v1/web/cms/skinStrategy/addOrUpdateSkinStrategy", new UploadCallback() {
-            @Override
-            public void onProgress(long currentLength, long totalLength, float percent) {
-                if (percent == 100) {
-                    mUpload_btn.setClickable(true);
-                }
-                mUpload_progress.setProgress((int) percent);
-                mUpload_progress_desc.setText(percent + "%");
-            }
-
-            @Override
-            public void onFail(int errCode, String errMsg) {
-                mUpload_btn.setClickable(true);
-            }
-        }).addParam("strategyId", "41")
-                .addParam("title", "初秋美白养成计划")
-                .addParam("tagIds", "95,96,208")
-                .addParam("content", "夏天晒黑了？初秋正是美白的好时机，快快行动起来。")
-                .addParam("status", "1")
-                .addFile("androidPicFile", getUploadFile(this, "test.jpg"))
-                .baseUrl("https://200.200.200.50/")
-                .request(new ApiCallback<Object>() {
-                    @Override
-                    public void onSuccess(Object data) {
-                        GoLog.i("upload success:" + data);
-                    }
-
-                    @Override
-                    public void onFail(int errCode, String errMsg) {
-                        mUpload_btn.setClickable(true);
-                        GoLog.i("upload errorCode:" + errCode + ",errorMsg:" + errMsg);
-                    }
-                });
+//        GoHttp.UPLOAD("v1/web/cms/skinStrategy/addOrUpdateSkinStrategy", new UploadCallback() {
+//            @Override
+//            public void onProgress(long currentLength, long totalLength, float percent) {
+//                if (percent == 100) {
+//                    mUpload_btn.setClickable(true);
+//                }
+//                mUpload_progress.setProgress((int) percent);
+//                mUpload_progress_desc.setText(percent + "%");
+//            }
+//
+//            @Override
+//            public void onFail(int errCode, String errMsg) {
+//                mUpload_btn.setClickable(true);
+//            }
+//        }).addParam("strategyId", "41")
+//                .addParam("title", "初秋美白养成计划")
+//                .addParam("tagIds", "95,96,208")
+//                .addParam("content", "夏天晒黑了？初秋正是美白的好时机，快快行动起来。")
+//                .addParam("status", "1")
+//                .addFile("androidPicFile", getUploadFile(this, "test.jpg"))
+//                .baseUrl("https://200.200.200.50/")
+//                .request(new ApiCallback<Object>() {
+//                    @Override
+//                    public void onSuccess(Object data) {
+//                        GoLog.i("upload success:" + data);
+//                    }
+//
+//                    @Override
+//                    public void onFail(int errCode, String errMsg) {
+//                        mUpload_btn.setClickable(true);
+//                        GoLog.i("upload errorCode:" + errCode + ",errorMsg:" + errMsg);
+//                    }
+//                });
     }
 
     private void download() {
@@ -105,27 +101,27 @@ public class UploadDownActivity extends AppCompatActivity {
         String saveName = "weixin.apk";
         //http://dldir1.qq.com/weixin/android/weixin6330android920.apk
         //http://imtt.dd.qq.com/16891/1A8EA15110A5DA113EBD2F955615C7EC.apk?fsname=com.moji.mjweather_7.0103.02_7010302.apk&csr=1bbd
-        GoHttp.DOWNLOAD("16891/1A8EA15110A5DA113EBD2F955615C7EC.apk?fsname=com.moji.mjweather_7.0103.02_7010302.apk&csr=1bbd")
-                .baseUrl("http://imtt.dd.qq.com/")
-                .setFileName(saveName)
-                .request(new ApiCallback<DownProgress>() {
-                    @Override
-                    public void onSuccess(DownProgress downProgress) {
-                        if (downProgress == null) {
-                            return;
-                        }
-                        mDownload_progress.setProgress((int) (downProgress.getDownloadSize() * 100 / downProgress.getTotalSize()));
-                        mDownload_progress_desc.setText(downProgress.getPercent());
-                        if (downProgress.isDownComplete()) {
-                            mDownload_btn.setClickable(true);
-                        }
-                    }
-
-                    @Override
-                    public void onFail(int errCode, String errMsg) {
-                        mDownload_btn.setClickable(true);
-                    }
-                });
+//        GoHttp.DOWNLOAD("16891/1A8EA15110A5DA113EBD2F955615C7EC.apk?fsname=com.moji.mjweather_7.0103.02_7010302.apk&csr=1bbd")
+//                .baseUrl("http://imtt.dd.qq.com/")
+//                .setFileName(saveName)
+//                .request(new ApiCallback<DownProgress>() {
+//                    @Override
+//                    public void onSuccess(DownProgress downProgress) {
+//                        if (downProgress == null) {
+//                            return;
+//                        }
+//                        mDownload_progress.setProgress((int) (downProgress.getDownloadSize() * 100 / downProgress.getTotalSize()));
+//                        mDownload_progress_desc.setText(downProgress.getPercent());
+//                        if (downProgress.isDownComplete()) {
+//                            mDownload_btn.setClickable(true);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFail(int errCode, String errMsg) {
+//                        mDownload_btn.setClickable(true);
+//                    }
+//                });
     }
 
     private File getUploadFile(Context context, String fileName) {

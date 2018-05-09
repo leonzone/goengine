@@ -3,12 +3,11 @@ package com.gouuse.goengine.http.request;
 import android.support.annotation.NonNull;
 
 import com.gouuse.goengine.http.body.UploadProgressRequestBody;
-import com.gouuse.goengine.http.callback.ApiCallback;
 import com.gouuse.goengine.http.callback.UploadCallback;
 import com.gouuse.goengine.http.core.ApiManager;
 import com.gouuse.goengine.http.mode.CacheResult;
 import com.gouuse.goengine.http.mode.MediaTypes;
-import com.gouuse.goengine.http.subscriber.ApiCallbackSubscriber;
+import com.gouuse.goengine.http.callback.NetCallback;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,7 +19,6 @@ import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
-import io.reactivex.observers.DisposableObserver;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -71,12 +69,11 @@ public class UploadRequest extends BaseHttpRequest<UploadRequest> {
     }
 
     @Override
-    protected <T> void execute(ApiCallback<T> callback) {
-        DisposableObserver disposableObserver = new ApiCallbackSubscriber(callback);
+    protected void execute(NetCallback callback) {
         if (super.tag != null) {
-            ApiManager.get().add(super.tag, disposableObserver);
+            ApiManager.get().add(super.tag, callback);
         }
-        this.execute(getType(callback)).subscribe(disposableObserver);
+        this.execute(getType(callback)).subscribe(callback);
     }
 
     public UploadRequest addUrlParam(String paramKey, String paramValue) {

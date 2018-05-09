@@ -6,12 +6,11 @@ import android.text.TextUtils;
 
 import com.gouuse.goengine.common.GoConfig;
 import com.gouuse.goengine.http.GoHttp;
-import com.gouuse.goengine.http.callback.ApiCallback;
 import com.gouuse.goengine.http.core.ApiManager;
 import com.gouuse.goengine.http.func.ApiRetryFunc;
 import com.gouuse.goengine.http.mode.CacheResult;
 import com.gouuse.goengine.http.mode.DownProgress;
-import com.gouuse.goengine.http.subscriber.DownCallbackSubscriber;
+import com.gouuse.goengine.http.callback.NetCallback;
 
 import org.reactivestreams.Publisher;
 
@@ -30,7 +29,6 @@ import io.reactivex.FlowableOnSubscribe;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
-import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 
@@ -125,12 +123,11 @@ public class DownloadRequest extends BaseHttpRequest<DownloadRequest> {
     }
 
     @Override
-    protected <T> void execute(ApiCallback<T> callback) {
-        DisposableObserver disposableObserver = new DownCallbackSubscriber(callback);
+    protected  void execute(NetCallback callback) {
         if (super.tag != null) {
-            ApiManager.get().add(super.tag, disposableObserver);
+            ApiManager.get().add(super.tag, callback);
         }
-        this.execute(getType(callback)).subscribe(disposableObserver);
+        this.execute(getType(callback)).subscribe(callback);
     }
 
     private void saveFile(FlowableEmitter<? super DownProgress> sub, File saveFile, ResponseBody resp) {

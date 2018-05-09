@@ -11,7 +11,7 @@ public class HttpStatus<T> {
     /**
      * 请求状态码
      */
-    private Long code;
+    private int code;
     /**
      * 提示信息
      */
@@ -21,11 +21,11 @@ public class HttpStatus<T> {
      */
     private T data;
 
-    public Long getCode() {
+    public int getCode() {
         return code;
     }
 
-    public void setCode(Long code) {
+    public void setCode(int code) {
         this.code = code;
     }
 
